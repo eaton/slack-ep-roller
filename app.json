@@ -1,7 +1,7 @@
 {
-  "name": "Node.js Getting Started",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-getting-started",
+  "name": "Slack Eclipse Phase Roller",
+  "description": "An Eclipse Phase dice-rolling app for Slack.",
+  "repository": "https://github.com/eaton/slack-ep-roller",
   "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "static"]
+  "keywords": ["node", "express", "static", "rpg", "slack"]
 }
