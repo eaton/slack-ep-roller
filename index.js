@@ -12,12 +12,12 @@ app.get('/', function(request, response) {
 
 var roll = require('./roll');
 var check = require('./check');
-var opposed = require('./opposed');
+var oppose = require('./oppose');
 var define = require('./define');
 
 app.post('/roll', roll);
 app.post('/check', check);
-app.post('/opposed', opposed);
+app.post('/oppose', oppose);
 app.post('/define', define);
 
 app.listen(app.get('port'), function() {
