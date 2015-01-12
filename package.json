@@ -7,9 +7,10 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "~4.9.x",
     "body-parser": "^1.x.x",
-    "droll": "^0.1.1"
+    "droll": "^0.1.1",
+    "express": "~4.9.x",
+    "request": "^2.51.0"
   },
   "engines": {
     "node": "0.10.x"

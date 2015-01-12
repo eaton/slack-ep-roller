@@ -1,49 +1,50 @@
 /*
-Basic Eclipse Phase skill check.
-
-The number passed in is the player's "target" value. Logic is as follows:
-
-1. A d% roll is made, and compared to the target number. roll <= target == success.
-2. Successes >= 30 are 'Excellent' successes (+5 damage during combat)
-3. Successes >= 60 are 'Exceptional' successes (+10 damage during combat)
-4. Failures <= 70 are 'Severe' failures
-5. Failures <= 40 are 'Horrific' failures
-6. Margin of Failure == 100-roll. Margin of Success = roll
-7. Doubles (00, 11, 22...) are critical failures or successes.
-
+Simple skill-check. Wraps the eproll class, adds simple notation for Slack.
 */
+
+var request = require('request');
 
 module.exports = function (req, res, next) {
   var userName = req.body.user_name;
+  var EPRoll = require('./eproll');
 
   var target = parseInt(req.body.text);
-  var roll = Math.floor(Math.random() * 100);  
-  
-  var isSuccess = (target > roll);
-  var isCritical = ((roll == 0) || (roll % 11 == 0));
-  var margin = isSuccess ? roll : (100 - roll);
+  var results = new EPRoll(target);
 
-  var resultText = 'Rolled ' + roll.toString() + '/' + target.toString() + '. ';
+  var botPayload = {
+    username: 'DiceBot',
+    channel: req.body.channel_id,
+    icon_emoji: ':game_die:'
+  };
 
-  if (margin >= 60) {
-    resultText += (isSuccess ? 'Exceptional ' : 'Horrific ');
-  } else if (margin >= 30) {
-    resultText += (isSuccess ? 'Excellent ' : 'Severe ');
-  }
+  botPayload.text = results.toString();
 
-  resultText += isCritical ? 'Critical ' : '';
-  resultText += isSuccess ? 'Success!' : 'Failure!'
-
-  if (margin >= 30) {
-    resultText += ' (' + margin.toString() + (isSuccess ? ' point MoS)' : ' point MoF)');
-  }
-
-  var botPayload = {text : resultText};
+  // send dice roll
+  send(botPayload, function (error, status, body) {
+    if (error) {
+      return next(error);
+    } else if (status !== 200) {
+      // inform user that our Incoming WebHook failed
+      return next(new Error('Incoming WebHook: ' + status + ' ' + body));
+    } else {
+      return res.status(200).end();
+    }
+  });
+}
  
-  // avoid infinite loop
-  if (userName !== 'slackbot') {
-    return res.status(200).json(botPayload);
-  } else {
-    return res.status(200).end();
-  }
+function send (payload, callback) {
+  var path = process.env.INCOMING_WEBHOOK_PATH;
+  var uri = 'https://hooks.slack.com/services' + path;
+ 
+  request({
+    uri: uri,
+    method: 'POST',
+    body: JSON.stringify(payload)
+  }, function (error, response, body) {
+    if (error) {
+      return callback(error);
+    }
+ 
+    callback(null, response.statusCode, body);
+  });
 }
