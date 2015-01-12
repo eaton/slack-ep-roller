@@ -19,7 +19,7 @@ var EPRoll = function (target) {
   this.target = target;
   this.roll = Math.floor(Math.random() * 100);
 
-  this.success = (this.target > this.roll);
+  this.success = (this.target >= this.roll);
   this.critical = ((this.roll == 0) || (this.roll % 11 == 0));
   this.margin = this.success ? this.roll : (100 - this.roll);
 };

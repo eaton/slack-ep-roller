@@ -36,10 +36,10 @@ module.exports = function (req, res, next) {
       botPayload.text += 'Attacker rolled ' + aResult.toString() + '\n';
       botPayload.text += 'Defender rolled ' + oResult.toString() + '\n';
       
-      if (aResult.success == oResult.success == false) {
+      if (!aResult.success && !oResult.success) {
         botPayload.text += 'Neither succeeds!';
       }
-      if (aResult.success == oResult.success == true) {
+      else if (aResult.success && oResult.success) {
         if (aResult.roll == oResult.roll) {
           botPayload.text += 'Neither succeeds!';
         }
@@ -56,10 +56,10 @@ module.exports = function (req, res, next) {
           botPayload.text += 'Defender succeeds!';
         } 
       }
-      if (aResult.success) {
+      else if (aResult.success) {
         botPayload.text += 'Attacker succeeds!';
       }
-      if (oResult.success) {
+      else if (oResult.success) {
         botPayload.text += 'Defender succeeds!';
       }
     } else {
