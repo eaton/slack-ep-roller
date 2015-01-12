@@ -8,22 +8,33 @@ var request = require('request');
 var droll = require("droll");
 
 module.exports = function (req, res, next) {
-  var botPayload = {
-    username: 'DiceBot',
-    channel: req.body.channel_id,
-    icon_emoji: ':game_die:'
-  };
-
   if (req.body.text) {
-    // parse roll type if specified
-    var result = droll.roll(req.body.text)
-    if (result) {
-      botPayload.text = req.body.user_name + ' rolled ' + req.body.text + ': ' + result.toString();
-      console.log(botPayload.text);
+    var botPayload = {
+      text: '',
+      username: 'DiceBot',
+      channel: req.body.channel_id,
+      icon_emoji: ':game_die:'
+    };
+
+    var pieces = req.body.text.match(/^([1-9]\d*)?d([1-9]\d*)([+-]\d+)?\s*(.+)?$/i);
+    if (pieces) {
+      var numDice  = (pieces[1] - 0) || 1;
+      var numSides = (pieces[2] - 0) || 10;
+      var comments = (pieces[4]);
+
+      // Currently ignoring modifier because bodyParser kills plus signs. Because WTF URLEncoding.
+
+      var formula = numDice.toString() + 'd' + numSides.toString();
+      var result = droll.roll(formula)
+
+      botPayload.text = req.body.user_name + ' rolled ' + formula.toString();
+      if (comments) {
+        botPayload.text += ' (' + comments + ')';
+      }
+      botPayload.text += ': ' + result.toString();
     } else {
       // send error message back to user if input is bad
       return res.status(200).send('<number>d<sides>');
-      console.log("fail");
     }
   }
 

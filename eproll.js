@@ -25,7 +25,7 @@ var EPRoll = function (target) {
 };
 
 EPRoll.prototype.toString = function() {
-  var ret = 'Rolled ' + this.roll.toString() + '/' + this.target.toString() + '. ';
+  var ret = this.roll.toString() + ', targeting ' + this.target.toString() + '. ';
 
   if (this.margin >= 60) {
     ret += (this.success ? 'Exceptional ' : 'Horrific ');
