@@ -1,12 +1,12 @@
 /*
-Simple skill-check. Wraps the eproll class, adds simple notation for Slack.
+Simple skill-check. Wraps the Prole class, adds simple notation for Slack.
 */
 
 var request = require('request');
 
 module.exports = function (req, res, next) {
   var userName = req.body.user_name;
-  var EPRoll = require('./eproll');
+  var Prole = require('./prole');
 
   if (req.body.text) {
     var botPayload = {
@@ -21,10 +21,10 @@ module.exports = function (req, res, next) {
       var target  = (pieces[1] - 0) || 0;
       var comments = (pieces[2]);
   
-      var results = new EPRoll(target);
+      var results = new Prole(target);
       botPayload.text = req.body.user_name + ' requests a skill check';
       if (comments) { botPayload.text += ' (' + comments + ')'; }
-      botPayload.text += ':\n' + results.toString();
+      botPayload.text += ':\n' + results.prettyPrint();
     } else {
       // send error message back to user if input is bad
       return res.status(200).send('<target number> <comments>');

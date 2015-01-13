@@ -10,7 +10,7 @@ var request = require('request');
 
 module.exports = function (req, res, next) {
   var userName = req.body.user_name;
-  var EPRoll = require('./eproll');
+  var Prole = require('./prole');
 
   if (req.body.text) {
     var botPayload = {
@@ -26,40 +26,23 @@ module.exports = function (req, res, next) {
       var opp  = (pieces[2] - 0) || 0;
       var comments = (pieces[3]);
   
-      var aResult = new EPRoll(att);
-      var oResult = new EPRoll(opp);
+      var aResult = new Prole(att);
+      var oResult = new Prole(opp);
 
       botPayload.text = req.body.user_name + ' requests an opposed check';
       if (comments) botPayload.text += ' (' + comments + ')';
       botPayload.text += ':\n';
 
-      botPayload.text += 'Attacker rolled ' + aResult.toString() + '\n';
-      botPayload.text += 'Defender rolled ' + oResult.toString() + '\n';
+      botPayload.text += 'Attacker rolled ' + aResult.prettyPrint() + '\n';
+      botPayload.text += 'Defender rolled ' + oResult.prettyPrint() + '\n';
       
-      if (!aResult.success && !oResult.success) {
+      if (aResult == oResult) {
         botPayload.text += 'Neither succeeds!';
       }
-      else if (aResult.success && oResult.success) {
-        if (aResult.roll == oResult.roll) {
-          botPayload.text += 'Neither succeeds!';
-        }
-        else if (aResult.critical && !oResult.critical) {
+      else if (aResult > oResult) {
           botPayload.text += 'Attacker succeeds!';
-        }
-        else if (oResult.critical && !aResult.critical) {
-          botPayload.text += 'Defender succeeds!';
-        }
-        else if ((aResult.roll > oResult.roll)) {
-          botPayload.text += 'Attacker succeeds!';
-        }
-        else if (oResult.roll > aResult.roll) {
-          botPayload.text += 'Defender succeeds!';
-        } 
       }
-      else if (aResult.success) {
-        botPayload.text += 'Attacker succeeds!';
-      }
-      else if (oResult.success) {
+      else if (oResult > aResult) {
         botPayload.text += 'Defender succeeds!';
       }
     } else {
