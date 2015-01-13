@@ -16,7 +16,7 @@ var Prole = function (target) {
  the winner of an opposed check. 
 */
 Prole.prototype.valueOf = function() {
-  var valString = (this.success ? '' : '-') + (this.critical ? '1' : '') + this.rolled.toString;
+  var valString = (this.success ? '' : '-') + (this.critical ? '1' : '') + this.rolled.toString();
   return parseInt(valString);
 }
 
@@ -26,7 +26,6 @@ Prole.prototype.valueOf = function() {
 Prole.prototype.toString = function() {
   return (this.rolled < 10) ? ("0" + this.rolled) : this.rolled;
 }
-
 
 /*
 1. This sucks a lot and should change.

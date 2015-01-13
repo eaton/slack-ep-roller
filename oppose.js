@@ -37,13 +37,13 @@ module.exports = function (req, res, next) {
       botPayload.text += 'Defender rolled ' + oResult.prettyPrint() + '\n';
       
       if (aResult == oResult) {
-        botPayload.text += 'Neither succeeds!';
+        botPayload.text += 'Deadlocked!';
       }
       else if (aResult > oResult) {
-          botPayload.text += 'Attacker succeeds!';
+          botPayload.text += 'Attacker wins!';
       }
       else if (oResult > aResult) {
-        botPayload.text += 'Defender succeeds!';
+        botPayload.text += 'Defender wins!';
       }
     } else {
       // send error message back to user if input is bad
