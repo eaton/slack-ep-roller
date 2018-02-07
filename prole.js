@@ -10,7 +10,6 @@ var Prole = function (target) {
   this.margin = this.success ? this.rolled : (this.rolled - this.target);
 };
 
-
 /*
  Pretty dumb, but it allows sorting comparison of two roll objects to determine
  the winner of an opposed check. 
