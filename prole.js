@@ -31,8 +31,8 @@ Prole.prototype.toString = function() {
 1. This sucks a lot and should change.
 2. Successes >= 30 are 'Excellent' successes (+5 damage during combat)
 3. Successes >= 60 are 'Exceptional' successes (+10 damage during combat)
-4. Failures <= 70 are 'Severe' failures
-5. Failures <= 40 are 'Horrific' failures
+4. Failures <= 60 are 'Severe' failures
+5. Failures <= 30 are 'Horrific' failures
 6. Margin of Failure == 100-roll. Margin of Success = roll
 7. Doubles (00, 11, 22...) are critical failures or successes.
 */
