@@ -7,7 +7,7 @@ var Prole = function (target) {
   this.rolled = Math.floor(Math.random() * 100);
   this.success = this.rolled <= this.target;
   this.critical = (this.rolled % 11 == 0) || (this.rolled == 0);
-  this.margin = this.success ? this.rolled : (100 - this.rolled);
+  this.margin = this.success ? this.rolled : (this.rolled - this.target);
 };
 
 
